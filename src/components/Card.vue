@@ -1,5 +1,5 @@
 <template>
-  <a class="card" :class="{'card--up': faceUp }">
+  <div class="card" @click="flip">
     <div class="card__inner">
       <div class="card__front"></div>
 
@@ -7,23 +7,26 @@
         <img :src="url">
       </div>
     </div>
-  </a>
+  </div>
 </template>
 
 <script>
 export default {
   name: "Card",
   props: {
-    file: String,
-    faceUp: Boolean
+    file: String
   },
-
   data() {
     return {
       url: "/" + this.file + ".png"
     };
   },
-  methods: {}
+  methods: {
+    flip($event) {
+      $event.target.classList.toggle("flipped");
+      this.$emit("flipped");
+    }
+  }
 };
 </script>
 
@@ -33,21 +36,22 @@ export default {
   box-sizing: border-box;
 }
 .card {
+  max-width: 100%;
   display: block;
   border: 1px solid #ddd;
   border-radius: 15px;
   perspective: 1000px;
+  overflow: hidden;
 }
 
-.card.card--up .card__inner {
+.card.flipped .card__inner {
   transform: rotateY(180deg);
 }
 
 .card__inner,
 .card__front,
 .card__back {
-  // min-height: 300px;
-  min-height: 200px;
+  min-height: 250px;
 }
 
 .card * {
@@ -72,7 +76,7 @@ export default {
 }
 
 .card__front {
-  background: darkGray;
+  background: royalblue;
   z-index: 2;
 }
 
@@ -82,6 +86,7 @@ export default {
 
 img {
   display: block;
-  max-width: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 </style>

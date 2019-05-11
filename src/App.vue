@@ -1,22 +1,13 @@
 <template>
   <div id="app">
-    <Scoreboard/>
-
     <div class="cards">
-      <Card
-        v-for="(animal, index) in theAnimals"
-        :key="index"
-        :file="animal.name"
-        :isFaceUp="animal.isFaceUp"
-        @click.native="cardClick"
-      />
+      <Card :file="animal" v-for="animal in animals"/>
     </div>
   </div>
 </template>
 
 <script>
 import Card from "./components/Card.vue";
-import Scoreboard from "./components/Scoreboard.vue";
 
 const animals = ["elephant", "lion", "fox", "tiger", "rabbit", "owl"];
 
@@ -28,41 +19,18 @@ function shuffle(a) {
   return a;
 }
 
-const animalObjects = [];
-animals.forEach(item => {
-  animalObjects.push({
-    name: item,
-    isFaceUp: false
-  });
-});
-
-console.log(animalObjects);
-
-const dups = animals.concat(animalObjects);
+const dups = animals.concat(animals);
 const dupsShuffled = shuffle(dups);
 
 export default {
   name: "app",
   components: {
-    Card,
-    Scoreboard
+    Card
   },
   data() {
     return {
-      theAnimals: dupsShuffled,
-      flipCounter: 0,
-      pair: {
-        firstCard: null,
-        secondCard: null
-      }
+      animals: dupsShuffled
     };
-  },
-  methods: {
-    cardClick($event) {
-      console.log("card click", $event);
-      this.theAnimals[4].isFaceUp = true;
-      console.log(this.theAnimals);
-    }
   }
 };
 </script>
@@ -84,18 +52,5 @@ body {
   display: grid;
   grid-gap: 20px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-li {
-  max-width: 100%;
-  display: block;
-  cursor: pointer;
-  // width: 25%;
-  // margin: 10px;
-}
-.cards__button {
-  display: block;
-  appearance: none;
-  -webkit-appearance: none;
 }
 </style>
