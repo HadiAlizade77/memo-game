@@ -1,32 +1,46 @@
 <template>
-  <div class="card" @click="flip">
+  <div :class="cardClasses" @click="tap">
     <div class="card__inner">
-      <div class="card__front"></div>
-
-      <div class="card__back">
-        <img :src="url">
+      <div class="card__front">{{card.id}}</div>
+      <div class="card__back" :style="`background-image: url(${imgUrl})`">
       </div>
     </div>
   </div>
 </template>
 
 <script>
+ /* eslint-disable */
+
 export default {
   name: "Card",
   props: {
-    animal: Object,
-    default: ()=> {},
+    card: { 
+      type: Object,
+      default: ()=> {},
+    },
+    flipped: {
+      type:  Boolean,
+      default: () => false,
+    }
   },
+
   data() {
     return {
-      url: "/" + this.animal.image + ".png"
+      imgUrl: "/" + this.card.image + ".png"
     };
   },
   methods: {
-    flip($event) {
-      $event.target.classList.toggle("flipped");
-      this.$emit("flipped");
-    }
+    tap() {
+      this.$emit("tapped", this.card.id);
+    },
+  },
+  computed: {
+    cardClasses() {
+      return  {
+        'card': true,
+        'card--flipped': this.flipped,
+      };
+    },
   }
 };
 </script>
@@ -38,10 +52,9 @@ export default {
 .card {
   max-width: 100%;
   display: block;
-  border: 1px solid #ddd;
-  border-radius: 15px;
+  background-color: #efefef;
   perspective: 1000px;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 .card.flipped .card__inner {
@@ -52,7 +65,8 @@ export default {
 .card__inner,
 .card__front,
 .card__back {
-  min-height: 250px;
+  border-radius: 15px;
+  min-height: 200px;
 }
 
 .card * {
@@ -70,6 +84,10 @@ export default {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: #fff;
   top: 0;
   left: 0;
   width: 100%;
@@ -85,9 +103,4 @@ export default {
   transform: rotateY(180deg);
 }
 
-img {
-  display: block;
-  object-fit: cover;
-  object-position: 50% 50%;
-}
 </style>
