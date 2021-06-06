@@ -1,5 +1,5 @@
-# memory
-
+# memory game
+![screenshot](https://raw.githubusercontent.com/HadiAlizade77/memo-game/master/Screenshot_20210607_030356.png)
 ## Project setup
 ```
 yarn install
